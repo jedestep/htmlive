@@ -3,16 +3,12 @@
 <div id="userbox">
 
 </div>
-<button id="switch">Switch turns!</button>
 <script type="text/javascript" charset="utf-8">
-    var p1turn = true;
-    socket.on('_write', function(d) {
-        $('#userbox').html(d['html']);
-    });
-
-    $('#switch').click(function() {
-            p1turn = !p1turn;
-            socket.emit('_read', {data: null})
-    });
+    var source = new EventSource('/stream');
+    source.onmessage = function(ev) {
+        if (ev.data && ev.data === 'refresh') {
+            $('#userbox').load("/show");
+        }
+    };
 </script>
 {% endblock %}
