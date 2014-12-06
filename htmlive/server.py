@@ -1,4 +1,4 @@
-from flask import Flask, Response, render_template
+from flask import Flask, Response, render_template, request
 from time import sleep
 
 import os
@@ -24,12 +24,19 @@ def evstream():
                 last_change = stats.st_ctime
                 yield 'data: refresh\n\n'
                 print 'heard about a change'
-            sleep(1)
+            sleep(0.5)
         except KeyboardInterrupt:
             break
 
-@app.route('/')
+@app.route('/',methods=['GET','POST'])
 def index():
+    if request.method == 'POST':
+        f = request.form
+        with open('in.txt','w') as fl:
+            for k,v in f.to_dict().iteritems():
+                fl.write('%s %s' % (str(k),str(v)))
+        with open('ready','a') as fl:
+            fl.write('1')
     return render_template("index.html")
 
 @app.route('/show')
@@ -47,5 +54,5 @@ if __name__ == '__main__':
     signal.signal(signal.SIGQUIT,stopGoing)
     signal.signal(signal.SIGHUP,stopGoing)
     signal.signal(signal.SIGTERM,stopGoing)
-    app.debug = True
-    app.run(threaded=True)
+    #app.debug = True
+    app.run(host='0.0.0.0',port=20005,threaded=True)
