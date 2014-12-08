@@ -5,7 +5,10 @@ from time import sleep
 
 if __name__ == '__main__':
     child = subprocess.Popen(sys.argv[1],stdin=subprocess.PIPE,stdout=subprocess.PIPE)
-    debug = sys.argv[2]
+    try:
+        debug = sys.argv[2]
+    except:
+        debug = None
     last_change = ''
     while 1:
         try:
