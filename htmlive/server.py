@@ -34,9 +34,11 @@ def index():
         f = request.form
         with open('in.txt','w') as fl:
             for k,v in f.to_dict().iteritems():
-                fl.write('%s %s' % (str(k),str(v)))
+                fl.write('%s %s\n' % (str(k),str(v)))
+            fl.flush()
         with open('ready','a') as fl:
             fl.write('1')
+            fl.flush()
     return render_template("index.html")
 
 @app.route('/show')
