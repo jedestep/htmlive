@@ -57,4 +57,4 @@ if __name__ == '__main__':
     signal.signal(signal.SIGHUP,stopGoing)
     signal.signal(signal.SIGTERM,stopGoing)
     #app.debug = True
-    app.run(host='0.0.0.0',port=20005,threaded=True)
+    app.run(host='0.0.0.0',port=(20000+int(sys.argv[1])),threaded=True)
